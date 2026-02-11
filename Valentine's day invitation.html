@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>For You ❤️</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600&family=Montserrat:wght@300;500&display=swap" rel="stylesheet">
+
+<style>
+body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Montserrat', sans-serif;
+    text-align: center;
+    overflow: hidden;
+}
+
+/* ---------- FIRST PAGE (SOFT ROMANTIC) ---------- */
+
+.romantic {
+    background: linear-gradient(135deg, #ff9a9e, #fad0c4);
+    color: white;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+.romantic h1 {
+    font-size: 2.5em;
+}
+
+button {
+    padding: 15px 30px;
+    font-size: 1.1em;
+    border: none;
+    border-radius: 30px;
+    cursor: pointer;
+    margin: 10px;
+    transition: 0.3s;
+}
+
+.yes {
+    background-color: #ff4b5c;
+    color: white;
+}
+
+.yes:hover {
+    transform: scale(1.1);
+}
+
+.no {
+    background-color: white;
+    color: #ff4b5c;
+    position: absolute;
+}
+
+/* Floating Hearts */
+
+.heart {
+    position: absolute;
+    width: 20px;
+    height: 20px;
+    background: red;
+    transform: rotate(45deg);
+    animation: float 6s linear infinite;
+}
+
+.heart::before,
+.heart::after {
+    content: "";
+    position: absolute;
+    width: 20px;
+    height: 20px;
+    background: red;
+    border-radius: 50%;
+}
+
+.heart::before { top: -10px; left: 0; }
+.heart::after { left: -10px; top: 0; }
+
+@keyframes float {
+    0% { bottom: -10%; opacity: 1; }
+    100% { bottom: 110%; opacity: 0; }
+}
+
+/* ---------- SECOND PAGE (CEO ENERGY) ---------- */
+
+.ceo {
+    background: #0d0d0d;
+    color: #d4af37;
+    height: 100vh;
+    display: none;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+.envelope-wrapper {
+    perspective: 1000px;
+    cursor: pointer;
+}
+
+.envelope {
+    width: 320px;
+    height: 200px;
+    background: #1a1a1a;
+    position: relative;
+    border: 1px solid #d4af37;
+}
+
+.flap {
+    width: 0;
+    height: 0;
+    border-left: 160px solid transparent;
+    border-right: 160px solid transparent;
+    border-bottom: 100px solid #d4af37;
+    position: absolute;
+    top: -100px;
+    left: 0;
+    transform-origin: bottom;
+    transition: transform 1s ease;
+}
+
+.letter {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background: #111;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-family: 'Playfair Display', serif;
+    letter-spacing: 2px;
+}
+
+.hidden-content {
+    text-align: center;
+    max-width: 600px;
+    opacity: 0;
+    transition: opacity 1.5s ease;
+}
+
+.open .flap {
+    transform: rotateX(-180deg);
+}
+
+.open .letter {
+    display: none;
+}
+
+.show-content {
+    opacity: 1;
+}
+
+h1.ceo-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 2em;
+}
+
+.countdown {
+    margin-top: 20px;
+    font-size: 1.1em;
+    letter-spacing: 2px;
+}
+</style>
+</head>
+
+<body>
+
+<!-- FIRST PAGE -->
+<div class="romantic" id="romanticPage">
+    <h1>Hey Beautiful ❤️</h1>
+    <p>Every day with you feels like magic.</p>
+    <h2>Will you be my Valentine? 💕</h2>
+    <button class="yes" onclick="startCEO()">YES 💖</button>
+    <button class="no" id="noButton">No 🙈</button>
+</div>
+
+<!-- SECOND PAGE -->
+<div class="ceo" id="ceoPage">
+    <div class="envelope-wrapper" onclick="openEnvelope()">
+        <div class="envelope" id="envelope">
+            <div class="flap"></div>
+            <div class="letter">OPEN YOUR PRIVATE INVITATION</div>
+        </div>
+    </div>
+
+    <div class="hidden-content" id="invitationContent">
+        <h1 class="ceo-title">IT'S OUR SECOND VALENTINE'S DAY TOGETHER</h1>
+        <p>And I don’t do ordinary nights.</p>
+
+        <div style="margin-top:20px; line-height:1.8em;">
+            Valentine’s Day Dinner Invitation 💘💝<br><br>
+            📅 12th February 2025<br>
+            📍 Il Mare, Hotel Mulia<br>
+            ⏰ 7:00 PM<br>
+            👗 Anything… because you look good in anything 🫶
+        </div>
+
+        <div class="countdown" id="countdown"></div>
+    </div>
+</div>
+
+<script>
+/* No Button Runs */
+const noButton = document.getElementById("noButton");
+noButton.addEventListener("mouseover", function() {
+    const x = Math.random() * window.innerWidth;
+    const y = Math.random() * window.innerHeight;
+    noButton.style.left = x + "px";
+    noButton.style.top = y + "px";
+});
+
+/* Floating Hearts */
+function createHeart() {
+    const heart = document.createElement("div");
+    heart.classList.add("heart");
+    heart.style.left = Math.random() * 100 + "vw";
+    heart.style.animationDuration = (Math.random() * 3 + 3) + "s";
+    document.body.appendChild(heart);
+    setTimeout(() => heart.remove(), 6000);
+}
+setInterval(createHeart, 300);
+
+/* Transition to CEO Page */
+function startCEO() {
+    document.getElementById("romanticPage").style.display = "none";
+    document.getElementById("ceoPage").style.display = "flex";
+}
+
+/* Envelope Open */
+function openEnvelope() {
+    document.getElementById("envelope").classList.add("open");
+    setTimeout(() => {
+        document.getElementById("invitationContent").classList.add("show-content");
+    }, 1000);
+}
+
+/* Countdown */
+const targetDate = new Date("February 12, 2025 19:00:00").getTime();
+setInterval(function() {
+    const now = new Date().getTime();
+    const distance = targetDate - now;
+    if (distance < 0) {
+        document.getElementById("countdown").innerHTML = "Tonight.";
+        return;
+    }
+    const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+    const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+    const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+    const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+    document.getElementById("countdown").innerHTML =
+        days + " DAYS • " + hours + " HOURS • " +
+        minutes + " MIN • " + seconds + " SEC";
+}, 1000);
+</script>
+
+</body>
+</html>
